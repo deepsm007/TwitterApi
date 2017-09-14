@@ -26,7 +26,6 @@ public class App
     		try {
 				Methods.readTweets();
 			} catch (Exception e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
     	}else if(choice.equalsIgnoreCase("2")){
@@ -37,7 +36,6 @@ public class App
     			String message = sc.nextLine();
 				Methods.writeTweets(user+" "+message);
 			} catch (Exception e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 

@@ -3,15 +3,18 @@
  */
 package com.rave.socialmedia;
 
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.util.Properties;
 
 import twitter4j.ResponseList;
 import twitter4j.Twitter;
 import twitter4j.TwitterException;
 import twitter4j.TwitterFactory;
 import twitter4j.api.TweetsResources;
-import twitter4j.auth.AccessToken;
 import twitter4j.auth.RequestToken;
 import twitter4j.conf.Configuration;
 import twitter4j.conf.ConfigurationBuilder;
@@ -25,8 +28,7 @@ public class Methods {
 	public static void readTweets() throws Exception {
 		Twitter twitter = null;
 		UserTwitterCredentials userTwitterDetails = null;
-		userTwitterDetails = generateCredentials("Yi531zC2f46Aub9K5zD5nwrbh",
-				"noS1Tzf9WfRgQFhd9DJbAU4sVwW4vXDCGDsnLWEryFSJsI9ci0");
+		userTwitterDetails = generateCredentials(readProperty("oauth.consumerKey"),readProperty("oauth.consumerSecret"));
 		twitter = getByConfigureBuilder(userTwitterDetails);
 
 		TweetsResources tweets = twitter.tweets();
@@ -42,8 +44,7 @@ public class Methods {
 	public static void writeTweets(String message) throws Exception {
 		Twitter twitter = null;
 		UserTwitterCredentials userTwitterDetails = null;
-		userTwitterDetails = generateCredentials("Yi531zC2f46Aub9K5zD5nwrbh",
-				"noS1Tzf9WfRgQFhd9DJbAU4sVwW4vXDCGDsnLWEryFSJsI9ci0");
+		userTwitterDetails = generateCredentials(readProperty("oauth.consumerKey"),readProperty("oauth.consumerSecret"));
 		twitter = getByConfigureBuilder(userTwitterDetails);
 		System.out.println("Your entered message :\n" + message);
 		twitter.updateStatus(message);
@@ -76,10 +77,10 @@ public class Methods {
 			
 
 			UserTwitterCredentials userTwitterDetails = new UserTwitterCredentials();
-			userTwitterDetails.setConsumerKey("Yi531zC2f46Aub9K5zD5nwrbh");
-			userTwitterDetails.setConsumerSecret("noS1Tzf9WfRgQFhd9DJbAU4sVwW4vXDCGDsnLWEryFSJsI9ci0");
-			userTwitterDetails.setAccessToken("904573384696233989-iJwID4WzhO3lWBpxu4EuXCqhWTbh1D6");
-			userTwitterDetails.setAccessSecret("c4uelEXAyBTpkE8T5gAMnI1vLcuuVOsHvltyFaQChAnaP");
+			userTwitterDetails.setConsumerKey(readProperty("oauth.consumerKey"));
+			userTwitterDetails.setConsumerSecret(readProperty("oauth.consumerSecret"));
+			userTwitterDetails.setAccessToken(readProperty("oauth.accessToken"));
+			userTwitterDetails.setAccessSecret(readProperty("oauthaccessTokenSecret"));
 
 			return userTwitterDetails;
 
@@ -124,18 +125,22 @@ public class Methods {
 	 * @return
 	 * @throws IOException
 	 */
-	/*
-	 * public static String readProperty(String key) throws IOException{
-	 * 
-	 * Properties prop = new Properties(); InputStream input = null;
-	 * 
-	 * // For using with eclipse // input = new
-	 * FileInputStream("../socialmedia/src/main/resources/twitter4j.properties")
-	 * ; // For using with jar or package
-	 * 
-	 * input = new FileInputStream("twitter4j.properties");
-	 * 
-	 * // load a properties file prop.load(input); input.close(); return
-	 * prop.getProperty(key); }
-	 */
+	
+	  public static String readProperty(String key) throws IOException{
+	  
+	  Properties prop = new Properties(); 
+	  InputStream input = null;
+	  
+	  // For using with eclipse 
+	  // input = new  FileInputStream("../socialmedia/src/main/resources/twitter4j.properties"); 
+	  // For using with jar or package
+	  
+	  input = new FileInputStream("./twitter4j.properties");
+	  
+	  // load a properties file 
+	  prop.load(input); 
+	  input.close(); 
+	  return prop.getProperty(key); 
+	  }
+	 
 }
